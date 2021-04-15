@@ -88,7 +88,7 @@ private:
     _display->clear();
     _display->drawString(x_position, y_position, the_message);
     _display->display(); 
-    vTaskDelay(500);
+    vTaskDelay(250);
     return true;
   }
   bool fall()

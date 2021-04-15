@@ -4,17 +4,18 @@ void messageTask(void * parameter)
 {
     task_data* data_object = (task_data *)parameter;
     Serial.println("Starting message scroller task");
-    MessageInfo _currentMessage;
 
     for( ;; )
     {
+        MessageInfo _currentMessage;
         if(xQueueReceive(data_object->messageQueue, &_currentMessage, (TickType_t) 10) == pdPASS)
         {
             while(data_object->running) { vTaskDelay(33); }
+
+            data_object->set_running();
             data_object->set_position(_currentMessage.position);
             data_object->set_message(_currentMessage.message);
             data_object->set_display_properties(_currentMessage.properties);
-            data_object->set_running();
             Message message(data_object);
             while(!message.display()){ vTaskDelay(1);} 
             data_object->set_stopped();
@@ -24,7 +25,7 @@ void messageTask(void * parameter)
 
 Gsdc_SSD1306::Gsdc_SSD1306(uint8_t i2c_address, int sda_pin, int scl_pin)
 {
-    this->_display = new SSD1306Wire(i2c_address, sda_pin, scl_pin);
+    _display = new SSD1306Wire(i2c_address, sda_pin, scl_pin);
     _messageQueue = xQueueCreate(10, sizeof(MessageInfo));
     _taskData = new task_data(_display, _messageQueue);
 }
@@ -65,6 +66,6 @@ void Gsdc_SSD1306::fall(line_positions starting_line, const char * message)
 }
 void Gsdc_SSD1306::show(line_positions starting_line, const char * message) 
 {
-    MessageInfo info(starting_line, message, display_properties::FALL);
+    MessageInfo info(starting_line, message, display_properties::STATIC);
     xQueueSend(_messageQueue, (void *)&info, portMAX_DELAY);
 }
