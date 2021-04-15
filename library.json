@@ -1,7 +1,7 @@
 {
     "name": "Gsdc SSD1306 API",
     "version": "1.0.0",
-    "description": "An API for displaying messages on an OLED display connected via the I2C Bus",
+    "description": "An API for displaying messages on an OLED display connected via the I2C Bus. Currently it only supports two tone SSD1306",
     "keywords": ["SSD1306", "OLED", "I2C", "IIC"],
     "repository":
     {
