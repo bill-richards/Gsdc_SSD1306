@@ -1,0 +1,35 @@
+{
+    "name": "Gsdc SSD1306 API",
+    "version": "1.0.0",
+    "description": "An API for displaying messages on an OLED display connected via the I2C Bus",
+    "keywords": ["SSD1306", "OLED", "I2C", "IIC"],
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/bill-richards/Gsdc_SSD1306.git"
+    },
+    "authors":
+    {
+      "name": "Bill Richards",
+      "email": "bill@greyskin.co.uk",
+      "maintainer" : true
+    },
+    "examples": [
+        {
+            "name" : "API Example",
+            "base" : "examples",
+            "files" : ["main.cpp"]
+        }
+    ],
+    "frameworks": "arduino",
+    "platforms": [
+      "espressif8266",
+      "espressif32"
+    ],
+    "dependencies" : [
+        {
+            "name": "ESP8266 and ESP32 OLED driver for SSD1306 displays",
+            "version": "https://github.com/ThingPulse/esp8266-oled-ssd1306#4.2.0"
+        }
+    ]
+}
