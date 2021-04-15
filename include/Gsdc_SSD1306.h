@@ -8,7 +8,7 @@
 #define SCREEN_HEIGHT 64
 
 typedef enum { TOP, MIDDLE, BOTTOM } line_positions;
-typedef enum { FALL, FLASH, RISE, SCROLL } display_properties;
+typedef enum { FALL, FLASH, RISE, SCROLL, STATIC } display_properties;
 
 struct MessageInfo
 {
@@ -82,6 +82,15 @@ private:
     }
     return true;
   }
+  bool show()
+  {
+    x_position = (_display->width() - message_length)/2;
+    _display->clear();
+    _display->drawString(x_position, y_position, the_message);
+    _display->display(); 
+    vTaskDelay(500);
+    return true;
+  }
   bool fall()
   {
     x_position = (_display->width() - message_length)/2;
@@ -139,6 +148,8 @@ public:
         return rise();
     if(_displayProperties == display_properties::FALL)
         return fall();
+    if(_displayProperties == display_properties::STATIC)
+        return show();
 
     return false;
   }
@@ -157,6 +168,7 @@ public:
     void flash(line_positions position, const char * message);
     void rise(line_positions starting_line, const char * message);
     void scroll(line_positions position, const char * message);
+    void show(line_positions position, const char * message);
 };
 
 #endif

@@ -63,3 +63,8 @@ void Gsdc_SSD1306::fall(line_positions starting_line, const char * message)
     MessageInfo info(starting_line, message, display_properties::FALL);
     xQueueSend(_messageQueue, (void *)&info, portMAX_DELAY);
 }
+void Gsdc_SSD1306::show(line_positions starting_line, const char * message) 
+{
+    MessageInfo info(starting_line, message, display_properties::FALL);
+    xQueueSend(_messageQueue, (void *)&info, portMAX_DELAY);
+}
