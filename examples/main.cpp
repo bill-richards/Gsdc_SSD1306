@@ -56,6 +56,7 @@ void loop()
     CALL_AND_WAIT_500_MILLIS(_display.leftHeading("SCROLL ..."));
     CALL_AND_WAIT_500_MILLIS(_display.scroll(MIDDLE, "...left"));
     CALL_AND_WAIT_500_MILLIS(_display.scrollToCenter(BOTTOM, "...center"));
+    CALL_AND_WAIT_500_MILLIS(_display.scroll(MIDDLE, "...left again"));
     CALL_AND_WAIT_500_MILLIS(_display.scrollRight(MIDDLE, "...right"));
     CALL_AND_WAIT_500_MILLIS(_display.scrubLine(BOTTOM));
     _display.scroll(BOTTOM, "Long messages scroll all the way off of the screen");

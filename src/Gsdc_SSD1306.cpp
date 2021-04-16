@@ -48,7 +48,7 @@ bool Message::scroll()
 
     while(x_position != final_x_position)
     {
-        clearLine();
+        clearMessage(x_position, y_position, max_width-x_position);
         _display->drawString(x_position, y_position, the_message);
         _display->display(); 
         x_position -= 1;
