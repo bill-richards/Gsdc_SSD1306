@@ -284,6 +284,7 @@ bool Message::scrubScreen()
     }
 
     _display->clear();
+    _display->display();
     return true;
 }
 
@@ -429,7 +430,7 @@ bool Message::scrubLine()
     return true;
 }
 
-void Message::clear() { _display->clear(); }
+void Message::clear() { _display->clear(); _display->display(); }
 
 void Message::clearLine()
 {
@@ -489,7 +490,7 @@ void messageTask(void * parameter)
 Gsdc_SSD1306::Gsdc_SSD1306(uint8_t i2c_address, int sda_pin, int scl_pin)
 {
     _display = new SSD1306Wire(i2c_address, sda_pin, scl_pin);
-    _messageQueue = xQueueCreate(20, sizeof(MessageInfo));
+    _messageQueue = xQueueCreate(48, sizeof(MessageInfo));
     _taskData = new task_services(_display, _messageQueue);
 }
 

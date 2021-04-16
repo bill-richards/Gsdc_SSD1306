@@ -15,6 +15,13 @@ void setup()
 
 void loop() 
 { 
+    CALL_AND_WAIT_500_MILLIS(_display.center(MIDDLE, "5"));
+    CALL_AND_WAIT_500_MILLIS(_display.center(MIDDLE, "4"));
+    CALL_AND_WAIT_500_MILLIS(_display.center(MIDDLE, "3"));
+    CALL_AND_WAIT_500_MILLIS(_display.center(MIDDLE, "2"));
+    CALL_AND_WAIT_500_MILLIS(_display.center(MIDDLE, "1"));
+    _display.clear();
+
     CALL_AND_WAIT_500_MILLIS(_display.heading("HEADING"));
     CALL_AND_WAIT_500_MILLIS(_display.scrubHeading());
     CALL_AND_WAIT_500_MILLIS(_display.flashHeading("Flash head"));
@@ -56,7 +63,7 @@ void loop()
     _display.important(oleh_message);
     _display.scrub();
 
-    while(_display.IsProcessingMessages()) { vTaskDelay(33); }
-    vTaskDelay(10000);
+    Serial.print(".");
+    _display.wait(2500);
 }
 
