@@ -7,19 +7,44 @@
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
-typedef enum { TOP, MIDDLE, BOTTOM } line_positions;
-typedef enum { CLEAR, CLEAR_INFO, CLEAR_LINE, FALL, FLASH, RISE, SCROLL, STATIC } display_properties;
+#define CALL_AND_WAIT_500_MILLIS(message) \
+  message; \
+  _display.wait(500);
+
+typedef enum { TOP, MIDDLE, BOTTOM, NO_POSITION } line_positions;
+typedef enum 
+{ 
+  NO_PROPERTY,
+  CENTER,
+  CLEAR, 
+  CLEAR_LINE, 
+  SCRUB, 
+  SCRUB_INFO, 
+  SCRUB_LINE, 
+  FALL, 
+  FLASH_CENTER, 
+  FLASH_LEFT, 
+  FLASH_RIGHT, 
+  LEFT,
+  RIGHT, 
+  RISE, 
+  SCROLL, 
+  SCROLL_RIGHT,
+  SCROLL_TO_CENTER, 
+  WAIT 
+} display_properties;
 
 struct MessageInfo
 {
 public:
-    line_positions position;
-    const char * message;
-    display_properties properties;
+  TickType_t period = 0;
+  line_positions position;
+  const char * message;
+  display_properties properties;
 
-    MessageInfo() : position(line_positions::MIDDLE), message(""), properties(display_properties::SCROLL) { }
-
-    MessageInfo(line_positions position_, const char * message_, display_properties properties_) : position(position_), message(message_), properties(properties_) { }
+  MessageInfo() : position(NO_POSITION), message(nullptr), properties(NO_PROPERTY) { }
+  MessageInfo(TickType_t period_) : period(period_), position(NO_POSITION), message(nullptr), properties(WAIT) { }
+  MessageInfo(line_positions position_, const char * message_, display_properties properties_) : position(position_), message(message_), properties(properties_) { }
 };
 
 struct task_services
@@ -41,19 +66,16 @@ public:
 struct task_data
 {
 public:
+  TickType_t period;
   const char * message;
   SSD1306Wire * display;
   line_positions screen_position;
   display_properties properties;
-  task_data() : screen_position(line_positions::MIDDLE), properties(display_properties::SCROLL)
+  task_data() : screen_position(NO_POSITION), properties(display_properties::NO_PROPERTY)
   {
     message = nullptr; 
     display = nullptr;
   }
-
-  void set_message(const char * message_) { return; message = message_; }
-  void set_position(line_positions position) { return; screen_position = position; }
-  void set_display_properties(display_properties properties_) {  properties = properties_; }
 };
 
 class Message
@@ -64,18 +86,29 @@ private:
   int x_position = _screenWidth;
   int y_position;
   int message_length;
+  line_positions _linePosition;
   SSD1306Wire* _display;
   display_properties _displayProperties;
-  bool scroll();
-  bool rise();
-  bool show();
-  bool fall();
-  bool flash();
+  TickType_t _waitPeriod;
+  bool center();
+  void clear();
   void clearLine();
   void clearLine(int x_position, int y_position);
-  bool scrub();
+  void clearMessage(int x, int y, int length);
+  bool fall();
+  bool flashCenter();
+  bool flashLeft();
+  bool flashRight();
+  bool left();
+  bool rise();
+  bool right();
+  bool scroll();
+  bool scrollRight();
+  bool scrollToCenter();
   bool scrubInfo();
   bool scrubLine();
+  bool scrubScreen();
+  bool wait();
 public:
   Message(task_data* data);
   bool display();
@@ -90,14 +123,31 @@ private:
 public:
     Gsdc_SSD1306(uint8_t i2c_address, int sda_pin, int scl_pin);
     void begin();
+    void center(line_positions starting_line, const char * message);
+    void centerHeading(const char * message);
+    void clear();
+    void clearLine(line_positions position) ;
     void fall(line_positions starting_line, const char * message);
-    void flash(line_positions position, const char * message);
+    void flashCenter(line_positions position, const char * message);
+    void flashHeading(const char * message);
+    void flashLeft(line_positions position, const char * message);
+    void flashRight(line_positions position, const char * message);
+    void heading(const char * message);
+    void important(const char * message);
+    void left(line_positions starting_line, const char * message);
+    void leftHeading(const char * message);
     void rise(line_positions starting_line, const char * message);
+    void right(line_positions starting_line, const char * message);
+    void rightHeading(const char * message);
     void scroll(line_positions position, const char * message);
+    void scrollRight(line_positions position, const char * message);
+    void scrollLeftHeading(const char * message);
+    void scrollToCenter(line_positions position, const char * message);
     void scrub();
+    void scrubHeading();
     void scrubInfo();
     void scrubLine(line_positions position);
-    void show(line_positions position, const char * message);
+    void wait(TickType_t period);
 
     bool IsProcessingMessages() { return _taskData->running; }
 };

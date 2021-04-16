@@ -1,8 +1,5 @@
 #include "Gsdc_SSD1306.h"  
 
-const char* init_message = "IMPORTANT";
-const char* scroll_middle = "scroll middle";
-const char* scroll_bottom = "scroll bottom";
 const char* oleh_message = "Demo Complete";
 
 Gsdc_SSD1306 _display(0x3c, SDA, SCL);
@@ -18,29 +15,48 @@ void setup()
 
 void loop() 
 { 
-    _display.flash(line_positions::TOP, "FLASH TOP");
-    _display.show(line_positions::TOP, "SHOW TOP");
-    _display.flash(line_positions::MIDDLE, "flash middle");
-    _display.show(line_positions::MIDDLE, "show middle");
-    _display.flash(line_positions::BOTTOM, "flash bottom");
-    _display.show(line_positions::BOTTOM, "show bottom");
-    _display.scrub();
+    CALL_AND_WAIT_500_MILLIS(_display.heading("HEADING"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrubHeading());
+    CALL_AND_WAIT_500_MILLIS(_display.flashHeading("Flash head"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrubHeading());
+    CALL_AND_WAIT_500_MILLIS(_display.scrollLeftHeading("Scroll left head"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrubHeading());
+    CALL_AND_WAIT_500_MILLIS(_display.centerHeading("Center head"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrubHeading());
+    CALL_AND_WAIT_500_MILLIS(_display.leftHeading("Left head"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrubHeading());
+    CALL_AND_WAIT_500_MILLIS(_display.rightHeading("Right head"));
+    
+    _display.important("Important msg");
+    _display.scrubLine(MIDDLE);
 
-    _display.flash(line_positions::MIDDLE, init_message);
-    _display.scrubLine(line_positions::MIDDLE);
-
-    _display.show(line_positions::TOP, "HEADLINE");
-    _display.scroll(line_positions::MIDDLE, scroll_middle);
-    _display.scroll(line_positions::BOTTOM, scroll_bottom);
+    CALL_AND_WAIT_500_MILLIS(_display.leftHeading("DISPLAY ..."));
+    CALL_AND_WAIT_500_MILLIS(_display.center(MIDDLE, "Falling text"));
+    CALL_AND_WAIT_500_MILLIS(_display.fall(MIDDLE, "Falling text"));
+    CALL_AND_WAIT_500_MILLIS(_display.left(MIDDLE, "left"));
+    CALL_AND_WAIT_500_MILLIS(_display.center(BOTTOM, "center"));
+    CALL_AND_WAIT_500_MILLIS(_display.right(MIDDLE, "right"));
     _display.scrubInfo();
 
-    _display.scroll(line_positions::MIDDLE, "A long message to scroll");
-    _display.scrubLine(line_positions::TOP);
+    _display.clearLine(TOP);
+    CALL_AND_WAIT_500_MILLIS(_display.leftHeading("FLASH ..."));
+    CALL_AND_WAIT_500_MILLIS(_display.flashRight(BOTTOM, "right"));
+    CALL_AND_WAIT_500_MILLIS(_display.flashCenter(MIDDLE, "center"));
+    CALL_AND_WAIT_500_MILLIS(_display.flashLeft(BOTTOM, "left"));
+    _display.scrubInfo();
+
+    _display.clearLine(TOP);
+    CALL_AND_WAIT_500_MILLIS(_display.leftHeading("SCROLL ..."));
+    CALL_AND_WAIT_500_MILLIS(_display.scroll(MIDDLE, "...left"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrollToCenter(BOTTOM, "...center"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrollRight(MIDDLE, "...right"));
+    CALL_AND_WAIT_500_MILLIS(_display.scrubLine(BOTTOM));
+    _display.scroll(BOTTOM, "Long messages scroll all the way off of the screen");
     
-    _display.flash(line_positions::TOP, oleh_message);
-    _display.fall(line_positions::TOP, oleh_message);
+    _display.important(oleh_message);
     _display.scrub();
 
     while(_display.IsProcessingMessages()) { vTaskDelay(33); }
-    vTaskDelay(15000);
+    vTaskDelay(10000);
 }
+
