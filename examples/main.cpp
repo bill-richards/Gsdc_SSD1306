@@ -64,7 +64,6 @@ void loop()
     _display.important(oleh_message);
     _display.scrub();
 
-    Serial.print(".");
-    _display.wait(2500);
+    delay(3000);
 }
 
