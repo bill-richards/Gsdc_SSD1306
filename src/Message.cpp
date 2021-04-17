@@ -79,7 +79,7 @@ bool Message::display()
 bool Message::fall()
 {
     x_position = (_display->width() - _messageWidth)/2;
-    while(y_position != _display->height()+1)
+    while(y_position <= _display->height())
     {
         clearLine(x_position, y_position-1);
         _display->drawString(x_position, y_position, _theMessage);
@@ -188,7 +188,7 @@ bool Message::scroll()
 {
     int max_width = _display->getWidth();
     int final_x_position = (_messageWidth >= max_width)
-        ? -_messageWidth
+        ? -(_messageWidth+1)
         : 0;
 
     while(x_position != final_x_position)
