@@ -17,5 +17,6 @@ void messageTask(void * parameter)
         while(!message.display()) { vTaskDelay(1); }
 
         if(!xQueuePeek(data.messageQueue, &peekMessage, (TickType_t) 10)) data.set_stopped();
+        taskYIELD();
     }
 }

@@ -18,7 +18,7 @@ void Gsdc_SSD1306::begin()
     _display->setFont(ArialMT_Plain_16);
     _display->setTextAlignment(TEXT_ALIGN_LEFT);
 
-    xTaskCreatePinnedToCore(messageTask, "MSG_TSK", 20480, (void *)_taskServices, 2, NULL, 1);
+    xTaskCreatePinnedToCore(messageTask, "MSG_TSK", 10000, (void *)_taskServices, 2, NULL, 1);
 }
 
 void Gsdc_SSD1306::center(line_positions starting_line, String message) 
