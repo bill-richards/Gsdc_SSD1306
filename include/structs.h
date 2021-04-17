@@ -1,8 +1,8 @@
-#ifndef _Gsdc_Structs_h_
-#define _Gsdc_Structs_h_
-
 #include <Arduino.h>
 #include <SSD1306Wire.h>
+
+#ifndef _Gsdc_Structs_h_
+#define _Gsdc_Structs_h_
 
 /* *********************************************************************************************** 
  * ENUMS

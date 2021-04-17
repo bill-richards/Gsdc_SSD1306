@@ -1,7 +1,7 @@
+#include "structs.h"
+
 #ifndef Gsdc_Message_h_
 #define Gsdc_Message_h_
-
-#include "structs.h"
 
 class Message
 {

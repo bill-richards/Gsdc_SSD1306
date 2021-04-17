@@ -1,7 +1,7 @@
+#include "structs.h"
+
 #ifndef Gsdc_SSD1306_h_
 #define Gsdc_SSD1306_h_
-
-#include "structs.h"
 
 class Gsdc_SSD1306
 {
