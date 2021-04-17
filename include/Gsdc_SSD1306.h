@@ -44,6 +44,12 @@ public:
 /* *********************************************************************************************** 
  * MACROS
  *********************************************************************************************** */
+#define CALL_AND_WAIT_100_MILLIS(message) \
+  message; \
+  _display.wait(100);
+#define CALL_AND_WAIT_250_MILLIS(message) \
+  message; \
+  _display.wait(250);
 #define CALL_AND_WAIT_500_MILLIS(message) \
   message; \
   _display.wait(500);
